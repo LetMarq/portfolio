@@ -6,7 +6,6 @@ import { LanguageSwitch } from "../LanguageSwitch/LanguageSwitch";
 
 type TaskbarProps = {
   menuOpen: boolean;
-  windowOpen: boolean;
   toggleMenu: () => void;
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -14,7 +13,6 @@ type TaskbarProps = {
 
 export function Taskbar({
   menuOpen,
-  windowOpen,
   toggleMenu,
   language,
   setLanguage,

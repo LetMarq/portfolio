@@ -9,11 +9,13 @@
     #2f253e,
     #4b2a6b,
     #8e2a6b,
+    #b5532a,
+    #2e7d4f,
     #2a3a8e,
     #2f253e
   );
   background-size: 400% 400%;
-  animation: desktop-gradient 45s ease infinite;
+  animation: desktop-gradient 55s ease infinite;
 }
 
 @keyframes desktop-gradient {
@@ -140,4 +142,26 @@
 
 .notepad-link:hover {
   color: #1a4fff;
+}
+
+/* grade de tecnologias (células afundadas estilo Win98) */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 12px;
+}
+
+.skill-cell {
+  width: 54px;
+  height: 54px;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #fdfdfd #fdfdfd #808080;
+  box-shadow:
+    inset 1px 1px 0 #000000,
+    inset -1px -1px 0 #dfdfdf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

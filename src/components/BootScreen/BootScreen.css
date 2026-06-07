@@ -1,0 +1,70 @@
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200000;
+  background: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  font-family: var(--font-win98);
+  color: #ffffff;
+  animation: boot-fade 200ms ease-out;
+}
+
+@keyframes boot-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.boot-logo {
+  font-size: 52px;
+  letter-spacing: 2px;
+  color: #d8d8e8;
+}
+
+.boot-logo span {
+  color: #ffffff;
+  font-weight: 800;
+  margin-left: 8px;
+}
+
+.boot-bar {
+  width: 220px;
+  height: 16px;
+  border: 1px solid #555555;
+  background: #0a0a0a;
+  overflow: hidden;
+  padding: 2px;
+}
+
+.boot-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #1a3df0 0 14px,
+    transparent 14px 22px
+  );
+  background-size: 44px 100%;
+  animation: boot-scroll 0.8s linear infinite;
+}
+
+@keyframes boot-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 44px 0;
+  }
+}
+
+.boot-text {
+  font-size: 13px;
+  color: #aaaaaa;
+}

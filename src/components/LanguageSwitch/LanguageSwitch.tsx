@@ -1,4 +1,4 @@
-import type { Language } from "../../App";
+import type { Language } from "../../types/types";
 import "./LanguageSwitch.css";
 
 type LanguageSwitchProps = {

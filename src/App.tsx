@@ -3,11 +3,35 @@ import { Taskbar } from "./components/Taskbar/Taskbar";
 import { StartMenu } from "./components/StartMenu/StartMenu";
 import { DesktopIcon } from "./components/DesktopIcon/DesktopIcon";
 import { LoginScreen } from "./components/LoginScreen/LoginScreen";
+import { BootScreen } from "./components/BootScreen/BootScreen";
 import { useState } from "react";
 import type { Language } from "./types/types";
+import { playStartup, playShutdown, playOpen } from "./sounds";
+import { skills } from "./skillsData";
 import "./App.css";
 
-type WindowId = "about" | "checklist" | "portfolio" | "contact";
+type WindowId = "about" | "checklist" | "portfolio" | "contact" | "skills";
+
+function SkillsContent() {
+  return (
+    <div className="skills-grid">
+      {skills.map(({ name, color, path }) => (
+        <div className="skill-cell" key={name} title={name}>
+          <svg
+            width={30}
+            height={30}
+            viewBox="0 0 24 24"
+            fill={color}
+            role="img"
+            aria-label={name}
+          >
+            <path d={path} />
+          </svg>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function AboutContent({ language }: { language: Language }) {
   return (
@@ -92,9 +116,9 @@ export default function App() {
   const [language, setLanguage] = useState<Language>("pt");
 
   const [zOrder, setZOrder] = useState<WindowId[]>(["about", "checklist"]);
-  const [screen, setScreen] = useState<"desktop" | "off" | "login" | "on">(
-    "desktop",
-  );
+  const [screen, setScreen] = useState<
+    "boot" | "desktop" | "off" | "login" | "on"
+  >("boot");
 
   const isOpen = (id: WindowId) => openWindows.has(id);
 
@@ -104,8 +128,19 @@ export default function App() {
   const getZ = (id: WindowId) => 10 + zOrder.indexOf(id);
 
   const openWindow = (id: WindowId) => {
+    playOpen();
     setOpenWindows((prev) => new Set(prev).add(id));
     focusWindow(id);
+  };
+
+  const handleShutDown = () => {
+    playShutdown();
+    setScreen("off");
+  };
+
+  const handleLogin = () => {
+    playStartup();
+    setScreen("on");
   };
 
   const closeWindow = (id: WindowId) =>
@@ -114,6 +149,9 @@ export default function App() {
       next.delete(id);
       return next;
     });
+
+  // largura da viewport para ancorar janelas à direita em qualquer tela
+  const viewportW = typeof window !== "undefined" ? window.innerWidth : 1280;
 
   const desktopIcons = [
     {
@@ -137,14 +175,23 @@ export default function App() {
       label: language === "pt" ? "Contato" : "Contact",
     },
     {
+      id: "skills" as WindowId,
+      src: "/icons/tech.png",
+      label: language === "pt" ? "Tecnologias" : "Skills",
+    },
+    {
       id: "checklist" as WindowId,
       src: "/icons/recycle.png",
       label: language === "pt" ? "Lixeira" : "Recycle Bin",
     },
   ];
 
+  if (screen === "boot") {
+    return <BootScreen onDone={() => setScreen("on")} />;
+  }
+
   if (screen === "login") {
-    return <LoginScreen language={language} onLogin={() => setScreen("on")} />;
+    return <LoginScreen language={language} onLogin={handleLogin} />;
   }
 
   return (
@@ -185,7 +232,7 @@ export default function App() {
           onClose={() => closeWindow("about")}
           onFocus={() => focusWindow("about")}
           zIndex={getZ("about")}
-          initialPosition={{ x: 80, y: 60 }}
+          initialPosition={{ x: Math.max((viewportW - 320) / 2, 90), y: 70 }}
         >
           <AboutContent language={language} />
         </Window>
@@ -198,7 +245,7 @@ export default function App() {
           onClose={() => closeWindow("checklist")}
           onFocus={() => focusWindow("checklist")}
           zIndex={getZ("checklist")}
-          initialPosition={{ x: 460, y: 100 }}
+          initialPosition={{ x: Math.max(viewportW - 360, 460), y: 90 }}
         >
           <ChecklistContent language={language} />
         </Window>
@@ -236,17 +283,30 @@ export default function App() {
         </Window>
       )}
 
+      {isOpen("skills") && (
+        <Window
+          title={language === "pt" ? "Tecnologias" : "Skills"}
+          iconSrc="/icons/tech16.png"
+          accent={{ from: "#1452b3", to: "#5a8de0" }}
+          onClose={() => closeWindow("skills")}
+          onFocus={() => focusWindow("skills")}
+          zIndex={getZ("skills")}
+          initialPosition={{ x: 300, y: 180 }}
+        >
+          <SkillsContent />
+        </Window>
+      )}
+
       <StartMenu
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
         onSelectApp={(id) => openWindow(id as WindowId)}
-        onShutDown={() => setScreen("off")}
+        onShutDown={handleShutDown}
         language={language}
       />
 
       <Taskbar
         menuOpen={menuOpen}
-        windowOpen={openWindows.size > 0}
         toggleMenu={() => setMenuOpen((o) => !o)}
         language={language}
         setLanguage={setLanguage}
