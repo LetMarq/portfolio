@@ -17,7 +17,7 @@ dist-ssr
 .claude
 
 # Design reference (not part of the code)
-*.pdf
+portfolio-lelet*.pdf
 
 # Editor directories and files
 .vscode/*

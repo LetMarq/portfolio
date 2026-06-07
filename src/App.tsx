@@ -2,6 +2,7 @@ import { Window } from "./components/Window/Window";
 import { Taskbar } from "./components/Taskbar/Taskbar";
 import { StartMenu } from "./components/StartMenu/StartMenu";
 import { DesktopIcon } from "./components/DesktopIcon/DesktopIcon";
+import { LoginScreen } from "./components/LoginScreen/LoginScreen";
 import { useState } from "react";
 import type { Language } from "./types/types";
 import "./App.css";
@@ -29,12 +30,29 @@ function AboutContent({ language }: { language: Language }) {
       </p>
       <p>&nbsp;</p>
       <p>
+        {language === "pt"
+          ? "Atualmente faço mestrado na Unicamp,"
+          : "I'm currently doing a master's at Unicamp,"}
+      </p>
+      <p>
+        {language === "pt"
+          ? "voltado a jogos na educação."
+          : "focused on games in education."}
+      </p>
+      <p>&nbsp;</p>
+      <p>
         {"— "}
         {language === "pt" ? "Tecnologias" : "Technologies"}
         {" —"}
       </p>
       <p>React · TypeScript · CSS · Node.js</p>
       <p>Vite · Tailwind · Git · Figma</p>
+      <p>&nbsp;</p>
+      <p>
+        <a className="notepad-link" href="/pdf/CV.pdf" download>
+          {language === "pt" ? "Baixar meu currículo" : "Download my resume"}
+        </a>
+      </p>
     </div>
   );
 }
@@ -74,6 +92,9 @@ export default function App() {
   const [language, setLanguage] = useState<Language>("pt");
 
   const [zOrder, setZOrder] = useState<WindowId[]>(["about", "checklist"]);
+  const [screen, setScreen] = useState<"desktop" | "off" | "login" | "on">(
+    "desktop",
+  );
 
   const isOpen = (id: WindowId) => openWindows.has(id);
 
@@ -122,9 +143,26 @@ export default function App() {
     },
   ];
 
+  if (screen === "login") {
+    return <LoginScreen language={language} onLogin={() => setScreen("on")} />;
+  }
+
   return (
-    <div className="desktop">
-      <div className="desktop-icons-grid">
+    <div className="screen-frame">
+      <div
+        className={`desktop ${
+          screen === "off" ? "crt-off" : screen === "on" ? "crt-on" : ""
+        }`}
+        onAnimationEnd={(e) => {
+          if (screen === "off" && e.animationName === "crt-off") {
+            setScreen("login");
+          }
+          if (screen === "on" && e.animationName === "crt-on") {
+            setScreen("desktop");
+          }
+        }}
+      >
+        <div className="desktop-icons-grid">
         {desktopIcons.map((item, i) => (
           <DesktopIcon
             key={i}
@@ -202,6 +240,7 @@ export default function App() {
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
         onSelectApp={(id) => openWindow(id as WindowId)}
+        onShutDown={() => setScreen("off")}
         language={language}
       />
 
@@ -212,6 +251,7 @@ export default function App() {
         language={language}
         setLanguage={setLanguage}
       />
+      </div>
     </div>
   );
 }

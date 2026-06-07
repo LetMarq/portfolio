@@ -5,6 +5,7 @@ type StartMenuProps = {
   isOpen: boolean;
   onClose: () => void;
   onSelectApp: (appName: string) => void;
+  onShutDown: () => void;
   language: Language;
 };
 
@@ -12,6 +13,7 @@ export function StartMenu({
   isOpen,
   onClose,
   onSelectApp,
+  onShutDown,
   language,
 }: StartMenuProps) {
   const apps = [
@@ -71,7 +73,13 @@ export function StartMenu({
           <div className="menu-separator" />
 
           <div className="menu-bottom">
-            <button className="menu-item" onClick={onClose}>
+            <button
+              className="menu-item"
+              onClick={() => {
+                onClose();
+                onShutDown();
+              }}
+            >
               <span className="item-icon">
                 <svg
                   width="26"
