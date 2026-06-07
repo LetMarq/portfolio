@@ -1,60 +1,48 @@
-# 💾 portfolio.exe
+# Portfolio
 
-> A personal portfolio that boots straight into **Windows 98**. No, your monitor isn't broken — that's just nostalgia loading.
+A personal portfolio built as an interactive Windows 98 style desktop. You can open and drag windows, browse a working Start menu, switch between Portuguese and English, and explore each section like a retro operating system.
 
-Welcome to my little corner of the web, rebuilt as a fully draggable, double-click-to-open, retro desktop. Pull up a chair, grab a (perfect) coffee, and click around like it's 1998. ☕
+## Features
 
-![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-fast-646cff?logo=vite&logoColor=white)
-![Tailwind](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white)
+- Desktop with double click icons that open application windows
+- Draggable windows with focus handling, so clicking a window brings it to the front
+- Each window has its own accent color
+- Authentic Windows 98 style Start menu with a side banner
+- Taskbar with a live clock
+- Language switch between Portuguese (BR) and English (AU) that updates the whole interface
 
-## 🖥️ What's inside this beige box
+## Libraries and tools
 
-- **A real desktop** — icons you double-click, windows you drag around, and a Start button that actually does something.
-- **Draggable windows** with crunchy pixel-perfect title bars — each one in its own color, because plain gray is *so* 1995.
-- **An authentic Start menu**, complete with the little blue banner running up the side. Click around, it won't bite.
-- **A live taskbar & clock** that ticks in real time (yes, it knows what time it is).
-- **Bilingual in one click** — flip between 🇧🇷 Português and 🇦🇺 English by clicking the flag in the corner. The whole OS switches language. Even the Start button.
-- **Window focus** — click any window and it jumps to the front, exactly like the real thing.
+- **React 19** (`react`, `react-dom`): builds the interface and manages the desktop, windows and menu state.
+- **TypeScript**: typing across all components.
+- **Vite 8** (`vite`, `@vitejs/plugin-react`): development server and production build.
+- **Tailwind CSS v4** (`tailwindcss`, `@tailwindcss/vite`, `@tailwindcss/postcss`): utility classes for layout and styling, integrated through the Vite plugin.
+- **PostCSS** and **Autoprefixer**: CSS processing and vendor prefixing.
+- **ESLint 9** (`eslint`, `@eslint/js`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`, `typescript-eslint`): linting and code consistency.
 
-## 🛠️ Built with
+### Assets
 
-- **React 19** + **TypeScript** — the brains
-- **Vite** — the (very fast) boot loader
-- **Tailwind CSS v4** — the wardrobe
-- **react95 icons** + the legendary **w95fa** pixel font — the soul
-- A generous helping of nostalgia
+- **w95fa**: a Windows 95/98 style pixel font used across the interface.
+- Icon set sourced from the **react95** icon collection (stored as static images in `public/icons`).
 
-## 🚀 Boot it up locally
+## Getting started
 
 ```bash
-# insert the floppy disks
 npm install
-
-# power on
 npm run dev
 ```
 
-Then open the address Vite prints (usually `http://localhost:5173`) and you're in.
+Then open the address Vite prints (usually `http://localhost:5173`).
 
-### Other commands
+## Scripts
 
-| Command           | What it does                 |
+| Command           | Description                  |
 | ----------------- | ---------------------------- |
-| `npm run dev`     | Start the dev server         |
+| `npm run dev`     | Start the development server |
 | `npm run build`   | Build for production         |
 | `npm run preview` | Preview the production build |
-| `npm run lint`    | Keep the code tidy           |
+| `npm run lint`    | Run ESLint                   |
 
-## 📋 The to-do list (straight from the desktop, and 100% real)
+## Author
 
-1. Finish the portfolio ✅ *(you're looking at it)*
-2. Travel the world 🌍
-3. Learn how to make the perfect coffee ☕
-
----
-
-Made with 💜 and a lot of `#c0c0c0` gray by **Letícia Marques**.
-
-*If you open the Recycle Bin, please don't tell anyone what you find in there.*
+Made by Letícia Marques.
