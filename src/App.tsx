@@ -11,7 +11,11 @@ type WindowId = "about" | "checklist" | "portfolio" | "contact";
 function AboutContent({ language }: { language: Language }) {
   return (
     <div className="notepad-text">
-      <p>Hi, I'm Letícia Marques.</p>
+      <p>
+        {language === "pt"
+          ? "Oi, eu sou a Letícia Marques."
+          : "Hi, I'm Letícia Marques."}
+      </p>
       <p>&nbsp;</p>
       <p>
         {language === "pt"
@@ -41,12 +45,12 @@ function ChecklistContent({ language }: { language: Language }) {
       ? [
           "Terminar o portfólio.",
           "Viajar pelo mundo.",
-          "Aprender a fazer o café perfeito.",
+          "Aprender a fazer café.",
         ]
       : [
           "Finish the portfolio.",
           "Travel the world.",
-          "Learn how to make the perfect coffee.",
+          "Learn how to make coffee.",
         ];
 
   return (
@@ -65,7 +69,7 @@ const fileMenu = ["File", "Edit", "View", "Help"];
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openWindows, setOpenWindows] = useState<Set<WindowId>>(
-    new Set(["about", "checklist"])
+    new Set(["about", "checklist"]),
   );
   const [language, setLanguage] = useState<Language>("pt");
 
@@ -96,7 +100,11 @@ export default function App() {
       src: "/icons/notepad.png",
       label: language === "pt" ? "sobre_mim" : "about_me",
     },
-    { id: "checklist" as WindowId, src: "/icons/write.png", label: "Check List" },
+    {
+      id: "checklist" as WindowId,
+      src: "/icons/write.png",
+      label: "Check List",
+    },
     {
       id: "portfolio" as WindowId,
       src: "/icons/folder.png",
@@ -148,10 +156,7 @@ export default function App() {
       {isOpen("checklist") && (
         <Window
           title="Check List - Notes"
-          iconSrc="/icons/write16.png"
-          menuItems={fileMenu}
-          variant="notepad"
-          accent={{ from: "#6a1b9a", to: "#c178e8" }}
+          variant="postit"
           onClose={() => closeWindow("checklist")}
           onFocus={() => focusWindow("checklist")}
           zIndex={getZ("checklist")}

@@ -7,7 +7,7 @@ type WindowProps = {
   children: React.ReactNode;
   onClose?: () => void;
   menuItems?: string[];
-  variant?: "default" | "notepad";
+  variant?: "default" | "notepad" | "postit";
   initialPosition?: { x: number; y: number };
   accent?: { from: string; to: string };
   zIndex?: number;
@@ -48,7 +48,7 @@ export function Window({
   return (
     <div
       ref={windowRef}
-      className={`window-container window-open ${isDragging ? "dragging" : ""}`}
+      className={`window-container window-open window-${variant} ${isDragging ? "dragging" : ""}`}
       style={
         {
           left: `${position.x}px`,
@@ -73,12 +73,25 @@ export function Window({
           <span className="window-title">{title}</span>
         </div>
         <div className="window-title-buttons">
-          <button className="window-btn window-btn-min">_</button>
-          <button className="window-btn window-btn-max">□</button>
-          {onClose && (
-            <button className="window-btn window-btn-close" onClick={onClose}>
-              ✕
-            </button>
+          {variant === "postit" ? (
+            <>
+              <span className="postit-dots">•••</span>
+              {onClose && (
+                <button className="postit-close" onClick={onClose}>
+                  ✕
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <button className="window-btn window-btn-min">_</button>
+              <button className="window-btn window-btn-max">□</button>
+              {onClose && (
+                <button className="window-btn window-btn-close" onClick={onClose}>
+                  ✕
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -93,9 +106,28 @@ export function Window({
         </div>
       )}
 
-      <div className={`window-content ${variant === "notepad" ? "window-content-notepad" : ""}`}>
-        {children}
-      </div>
+      {variant === "notepad" ? (
+        <div className="window-content window-content-notepad">
+          <div className="notepad-frame">
+            <div className="notepad-text-area">{children}</div>
+            <div className="np-scroll np-scroll-v">
+              <div className="np-arrow up" />
+              <div className="np-track np-track-v">
+                <div className="np-thumb" />
+              </div>
+              <div className="np-arrow down" />
+            </div>
+            <div className="np-scroll np-scroll-h">
+              <div className="np-arrow left" />
+              <div className="np-track np-track-h" />
+              <div className="np-arrow right" />
+            </div>
+            <div className="np-corner" />
+          </div>
+        </div>
+      ) : (
+        <div className="window-content">{children}</div>
+      )}
     </div>
   );
 }

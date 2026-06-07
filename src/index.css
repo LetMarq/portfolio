@@ -38,12 +38,6 @@
   }
 }
 
-body,
-button,
-a {
-  cursor: url("/cursor.png"), auto;
-}
-
 @keyframes win98-open {
   from {
     transform: scale(0.85);

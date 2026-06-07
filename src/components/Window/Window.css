@@ -109,6 +109,176 @@
 
 .window-content-notepad {
   padding: 0;
-  background-color: white;
-  min-height: 120px;
+  background-color: #c0c0c0;
+}
+
+/* ---- Notepad com scrollbars decorativos ---- */
+.notepad-frame {
+  display: grid;
+  grid-template-columns: 1fr 16px;
+  grid-template-rows: 1fr 16px;
+  background-color: #c0c0c0;
+  min-height: 200px;
+}
+
+.notepad-text-area {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  overflow: hidden;
+}
+
+.np-scroll {
+  display: flex;
+}
+
+.np-scroll-v {
+  flex-direction: column;
+  width: 16px;
+}
+
+.np-scroll-h {
+  flex-direction: row;
+  height: 16px;
+}
+
+/* botões com seta (relevo clássico) */
+.np-arrow {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background-color: #c0c0c0;
+  border: 1px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #a0a0a0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.np-arrow::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.np-arrow.up::before {
+  border-width: 0 3px 4px 3px;
+  border-color: transparent transparent #000 transparent;
+}
+
+.np-arrow.down::before {
+  border-width: 4px 3px 0 3px;
+  border-color: #000 transparent transparent transparent;
+}
+
+.np-arrow.left::before {
+  border-width: 3px 4px 3px 0;
+  border-color: transparent #000 transparent transparent;
+}
+
+.np-arrow.right::before {
+  border-width: 3px 0 3px 4px;
+  border-color: transparent transparent transparent #000;
+}
+
+/* trilho pontilhado (dither) */
+.np-track {
+  flex: 1;
+  background-color: #c0c0c0;
+  background-image:
+    linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%),
+    linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%);
+  background-size: 2px 2px;
+  background-position: 0 0, 1px 1px;
+}
+
+/* "polegar" do scroll (só decorativo) */
+.np-thumb {
+  height: 30px;
+  margin: 0;
+  background-color: #c0c0c0;
+  border: 1px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #a0a0a0;
+}
+
+.np-corner {
+  width: 16px;
+  height: 16px;
+  background-color: #c0c0c0;
+}
+
+/* ---- Variante post-it ---- */
+.window-container.window-postit {
+  background: #e7ec84;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.45);
+  min-width: 210px;
+}
+
+.window-postit .window-title-bar {
+  background: transparent;
+  color: #2b2b1c;
+  height: auto;
+  padding: 8px 10px 2px;
+}
+
+.window-postit .window-title {
+  font-weight: bold;
+  font-size: 13px;
+  color: #2b2b1c;
+}
+
+.window-postit .postit-dots {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #6b6b39;
+  margin-right: 4px;
+}
+
+.window-postit .postit-close {
+  background: transparent;
+  border: none;
+  color: #2b2b1c;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.window-postit .postit-close:hover {
+  color: #000000;
+}
+
+.window-postit .window-content {
+  background: transparent;
+  padding: 2px 14px 14px;
+}
+
+/* texto do checklist dentro do post-it */
+.window-postit .notepad-text {
+  background: transparent;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  font-size: 12px;
+  color: #2b2b1c;
+}
+
+.window-postit .notepad-text p {
+  margin: 0 0 9px;
+}
+
+.window-postit .notepad-text p:last-child {
+  margin-bottom: 0;
 }
