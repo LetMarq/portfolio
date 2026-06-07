@@ -1,0 +1,15 @@
+.lang-button {
+  padding: 1px 4px;
+  border: 2px solid;
+  border-color: white gray gray white;
+  background: #c0c0c0;
+}
+
+.lang-button:active {
+  border-color: gray white white gray;
+}
+
+.lang-button.pressed {
+  border-color: gray white white gray;
+  transform: translate(1px, 1px);
+}

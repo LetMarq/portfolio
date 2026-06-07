@@ -1,0 +1,41 @@
+.start-button-wrapper {
+  float: left;
+  margin-left: 2px;
+  margin-bottom: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px 2px;
+  background-color: silver;
+  border: 2px solid;
+  border-color: white gray gray white;
+  box-shadow:
+    inset 1px 1px #dfdfdf,
+    1px 0 #000,
+    0 1px #000,
+    1px 1px #000;
+  min-width: 59px;
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.start-button-wrapper:active,
+.start-button-wrapper.pressed {
+  border-color: gray white white gray;
+  box-shadow:
+    inset 1px 1px #9a9a9a,
+    1px 0 #000,
+    0 1px #000,
+    1px 1px #000;
+}
+
+/* só o conteúdo afunda; o quadro do botão fica firme */
+.start-button-wrapper:active > img,
+.start-button-wrapper:active > span,
+.start-button-wrapper.pressed > img,
+.start-button-wrapper.pressed > span {
+  transform: translate(1px, 1px);
+}

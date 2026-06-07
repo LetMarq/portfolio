@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  /* No v4, definimos as variáveis de tema aqui dentro */
+  --font-win98: "Windows95", sans-serif;
+  --color-win98-gray: #c0c0c0;
+}
+
+@font-face {
+  font-family: "Windows95";
+  /* Verifique se o caminho do arquivo continua certinho! */
+  src: url("./assets/fonts/w95fa.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Forçamos a fonte em todos os elementos do projeto */
+@layer base {
+  html,
+  body,
+  #root {
+    font-family: var(--font-win98);
+    background-color: #2f253e;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  /* Garante que botões e inputs também usem a fonte */
+  button,
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+  }
+}
+
+body,
+button,
+a {
+  cursor: url("/cursor.png"), auto;
+}
+
+@keyframes win98-open {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.window-open {
+  animation: win98-open 120ms ease-out;
+}
