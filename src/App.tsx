@@ -36,33 +36,25 @@ function SkillsContent() {
 function AboutContent({ language }: { language: Language }) {
   return (
     <div className="notepad-text">
-      <p>
-        {language === "pt"
-          ? "Oi, eu sou a Letícia Marques."
-          : "Hi, I'm Letícia Marques."}
-      </p>
-      <p>&nbsp;</p>
-      <p>
-        {language === "pt"
-          ? "Sou uma desenvolvedora apaixonada por criar"
-          : "I'm a developer passionate about creating"}
-      </p>
-      <p>
-        {language === "pt"
-          ? "experiências únicas na web."
-          : "unique experiences on the web."}
-      </p>
-      <p>&nbsp;</p>
-      <p>
-        {language === "pt"
-          ? "Atualmente faço mestrado na Unicamp,"
-          : "I'm currently doing a master's at Unicamp,"}
-      </p>
-      <p>
-        {language === "pt"
-          ? "voltado a jogos na educação."
-          : "focused on games in education."}
-      </p>
+      <div className="about-section">
+        <p>
+          {language === "pt"
+            ? "Oi, eu sou a Letícia Marques."
+            : "Hi, I'm Letícia Marques."}
+        </p>
+
+        <p>
+          {language === "pt"
+            ? "Sou uma desenvolvedora apaixonada por criar experiências únicas na web."
+            : "I'm a developer passionate about creating unique experiences on the web."}
+        </p>
+
+        <p>
+          {language === "pt"
+            ? "Atualmente faço mestrado na Unicamp, voltado a jogos na educação."
+            : "I'm currently doing a master's at Unicamp, focused on games in education."}
+        </p>
+      </div>
       <p>&nbsp;</p>
       <p>
         {"— "}
@@ -133,7 +125,9 @@ function ContactContent({ language }: { language: Language }) {
       </div>
 
       <div className="contact-row">
-        <span className="contact-label">{language === "pt" ? "Para:" : "To:"}</span>
+        <span className="contact-label">
+          {language === "pt" ? "Para:" : "To:"}
+        </span>
         <a className="contact-link" href={`mailto:${CONTACT.email}`}>
           {CONTACT.email}
         </a>
@@ -152,7 +146,9 @@ function ContactContent({ language }: { language: Language }) {
       <textarea
         className="contact-body"
         placeholder={
-          language === "pt" ? "Escreva sua mensagem..." : "Write your message..."
+          language === "pt"
+            ? "Escreva sua mensagem..."
+            : "Write your message..."
         }
         value={body}
         onChange={(e) => setBody(e.target.value)}
@@ -285,105 +281,105 @@ export default function App() {
         }}
       >
         <div className="desktop-icons-grid">
-        {desktopIcons.map((item, i) => (
-          <DesktopIcon
-            key={i}
-            src={item.src}
-            label={item.label}
-            onDoubleClick={() => openWindow(item.id)}
-          />
-        ))}
-      </div>
+          {desktopIcons.map((item, i) => (
+            <DesktopIcon
+              key={i}
+              src={item.src}
+              label={item.label}
+              onDoubleClick={() => openWindow(item.id)}
+            />
+          ))}
+        </div>
 
-      {isOpen("about") && (
-        <Window
-          title={
-            language === "pt" ? "sobre_mim - Notepad" : "about_me - Notepad"
-          }
-          iconSrc="/icons/notepad16.png"
-          menuItems={fileMenu}
-          variant="notepad"
-          accent={{ from: "#b3135a", to: "#ff7eb9" }}
-          onClose={() => closeWindow("about")}
-          onFocus={() => focusWindow("about")}
-          zIndex={getZ("about")}
-          initialPosition={{ x: Math.max((viewportW - 320) / 2, 90), y: 70 }}
-        >
-          <AboutContent language={language} />
-        </Window>
-      )}
+        {isOpen("about") && (
+          <Window
+            title={
+              language === "pt" ? "sobre_mim - Notepad" : "about_me - Notepad"
+            }
+            iconSrc="/icons/notepad16.png"
+            menuItems={fileMenu}
+            variant="notepad"
+            accent={{ from: "#b3135a", to: "#ff7eb9" }}
+            onClose={() => closeWindow("about")}
+            onFocus={() => focusWindow("about")}
+            zIndex={getZ("about")}
+            initialPosition={{ x: Math.max((viewportW - 320) / 2, 90), y: 70 }}
+          >
+            <AboutContent language={language} />
+          </Window>
+        )}
 
-      {isOpen("checklist") && (
-        <Window
-          title="Check List - Notes"
-          variant="postit"
-          onClose={() => closeWindow("checklist")}
-          onFocus={() => focusWindow("checklist")}
-          zIndex={getZ("checklist")}
-          initialPosition={{ x: Math.max(viewportW - 360, 460), y: 90 }}
-        >
-          <ChecklistContent language={language} />
-        </Window>
-      )}
+        {isOpen("checklist") && (
+          <Window
+            title="Check List - Notes"
+            variant="postit"
+            onClose={() => closeWindow("checklist")}
+            onFocus={() => focusWindow("checklist")}
+            zIndex={getZ("checklist")}
+            initialPosition={{ x: Math.max(viewportW - 360, 460), y: 90 }}
+          >
+            <ChecklistContent language={language} />
+          </Window>
+        )}
 
-      {isOpen("portfolio") && (
-        <Window
-          title={language === "pt" ? "Portfólio" : "Portfolio"}
-          iconSrc="/icons/folder16.png"
-          accent={{ from: "#0d6e6e", to: "#4fc4c4" }}
-          onClose={() => closeWindow("portfolio")}
-          onFocus={() => focusWindow("portfolio")}
-          zIndex={getZ("portfolio")}
-          initialPosition={{ x: 200, y: 150 }}
-        >
-          <p style={{ padding: 8 }}>
-            {language === "pt" ? "Em construção..." : "Under construction..."}
-          </p>
-        </Window>
-      )}
+        {isOpen("portfolio") && (
+          <Window
+            title={language === "pt" ? "Portfólio" : "Portfolio"}
+            iconSrc="/icons/folder16.png"
+            accent={{ from: "#0d6e6e", to: "#4fc4c4" }}
+            onClose={() => closeWindow("portfolio")}
+            onFocus={() => focusWindow("portfolio")}
+            zIndex={getZ("portfolio")}
+            initialPosition={{ x: 200, y: 150 }}
+          >
+            <p style={{ padding: 8 }}>
+              {language === "pt" ? "Em construção..." : "Under construction..."}
+            </p>
+          </Window>
+        )}
 
-      {isOpen("contact") && (
-        <Window
-          title={language === "pt" ? "Contato" : "Contact"}
-          iconSrc="/icons/computer16.png"
-          accent={{ from: "#c75b00", to: "#ff9e57" }}
-          onClose={() => closeWindow("contact")}
-          onFocus={() => focusWindow("contact")}
-          zIndex={getZ("contact")}
-          initialPosition={{ x: 250, y: 120 }}
-        >
-          <ContactContent language={language} />
-        </Window>
-      )}
+        {isOpen("contact") && (
+          <Window
+            title={language === "pt" ? "Contato" : "Contact"}
+            iconSrc="/icons/computer16.png"
+            accent={{ from: "#c75b00", to: "#ff9e57" }}
+            onClose={() => closeWindow("contact")}
+            onFocus={() => focusWindow("contact")}
+            zIndex={getZ("contact")}
+            initialPosition={{ x: 250, y: 120 }}
+          >
+            <ContactContent language={language} />
+          </Window>
+        )}
 
-      {isOpen("skills") && (
-        <Window
-          title={language === "pt" ? "Tecnologias" : "Skills"}
-          iconSrc="/icons/tech16.png"
-          accent={{ from: "#1452b3", to: "#5a8de0" }}
-          onClose={() => closeWindow("skills")}
-          onFocus={() => focusWindow("skills")}
-          zIndex={getZ("skills")}
-          initialPosition={{ x: 300, y: 180 }}
-        >
-          <SkillsContent />
-        </Window>
-      )}
+        {isOpen("skills") && (
+          <Window
+            title={language === "pt" ? "Tecnologias" : "Skills"}
+            iconSrc="/icons/tech16.png"
+            accent={{ from: "#1452b3", to: "#5a8de0" }}
+            onClose={() => closeWindow("skills")}
+            onFocus={() => focusWindow("skills")}
+            zIndex={getZ("skills")}
+            initialPosition={{ x: 300, y: 180 }}
+          >
+            <SkillsContent />
+          </Window>
+        )}
 
-      <StartMenu
-        isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
-        onSelectApp={(id) => openWindow(id as WindowId)}
-        onShutDown={handleShutDown}
-        language={language}
-      />
+        <StartMenu
+          isOpen={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          onSelectApp={(id) => openWindow(id as WindowId)}
+          onShutDown={handleShutDown}
+          language={language}
+        />
 
-      <Taskbar
-        menuOpen={menuOpen}
-        toggleMenu={() => setMenuOpen((o) => !o)}
-        language={language}
-        setLanguage={setLanguage}
-      />
+        <Taskbar
+          menuOpen={menuOpen}
+          toggleMenu={() => setMenuOpen((o) => !o)}
+          language={language}
+          setLanguage={setLanguage}
+        />
       </div>
     </div>
   );
