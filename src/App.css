@@ -165,3 +165,98 @@
   align-items: center;
   justify-content: center;
 }
+
+/* janela de contato (estilo Outlook Express) */
+.contact {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  background: #c0c0c0;
+}
+
+.contact-toolbar {
+  padding: 3px 4px;
+  border-bottom: 1px solid #808080;
+  box-shadow: inset 0 -1px 0 #ffffff;
+}
+
+.contact-send {
+  font-family: var(--font-win98);
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow: inset 1px 1px 0 #dfdfdf;
+  cursor: pointer;
+}
+
+.contact-send:active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow: none;
+}
+
+.contact-send-icon {
+  font-size: 13px;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-bottom: 1px solid #a8a8a8;
+  box-shadow: inset 0 -1px 0 #ffffff;
+}
+
+.contact-label {
+  width: 50px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.contact-input {
+  flex: 1;
+  font-family: var(--font-win98);
+  font-size: 12px;
+  padding: 2px 4px;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+}
+
+.contact-body {
+  margin: 6px 8px;
+  height: 92px;
+  resize: none;
+  font-family: var(--font-win98);
+  font-size: 12px;
+  padding: 4px 5px;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+}
+
+.contact-social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  font-size: 12px;
+  border-top: 1px solid #808080;
+  box-shadow: inset 0 1px 0 #ffffff;
+}
+
+.contact-link {
+  color: #0000ee;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.contact-link:hover {
+  color: #1a4fff;
+}

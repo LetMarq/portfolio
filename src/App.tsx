@@ -106,6 +106,81 @@ function ChecklistContent({ language }: { language: Language }) {
   );
 }
 
+const CONTACT = {
+  email: "leticia.marquespinho@gmail.com",
+  github: "https://github.com/LetMarq",
+  linkedin: "https://www.linkedin.com/in/leticia-marques-pinho",
+};
+
+function ContactContent({ language }: { language: Language }) {
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+
+  const send = () => {
+    const url = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
+    window.location.href = url;
+  };
+
+  return (
+    <div className="contact">
+      <div className="contact-toolbar">
+        <button className="contact-send" onClick={send}>
+          <span className="contact-send-icon">✉</span>
+          {language === "pt" ? "Enviar" : "Send"}
+        </button>
+      </div>
+
+      <div className="contact-row">
+        <span className="contact-label">{language === "pt" ? "Para:" : "To:"}</span>
+        <a className="contact-link" href={`mailto:${CONTACT.email}`}>
+          {CONTACT.email}
+        </a>
+      </div>
+      <div className="contact-row">
+        <span className="contact-label">
+          {language === "pt" ? "Assunto:" : "Subject:"}
+        </span>
+        <input
+          className="contact-input"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+        />
+      </div>
+
+      <textarea
+        className="contact-body"
+        placeholder={
+          language === "pt" ? "Escreva sua mensagem..." : "Write your message..."
+        }
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+      />
+
+      <div className="contact-social">
+        <span>{language === "pt" ? "Ou me ache em:" : "Or find me on:"}</span>
+        <a
+          className="contact-link"
+          href={CONTACT.linkedin}
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn
+        </a>
+        <a
+          className="contact-link"
+          href={CONTACT.github}
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
+  );
+}
+
 const fileMenu = ["File", "Edit", "View", "Help"];
 
 export default function App() {
@@ -277,9 +352,7 @@ export default function App() {
           zIndex={getZ("contact")}
           initialPosition={{ x: 250, y: 120 }}
         >
-          <p style={{ padding: 8 }}>
-            {language === "pt" ? "Em construção..." : "Under construction..."}
-          </p>
+          <ContactContent language={language} />
         </Window>
       )}
 
