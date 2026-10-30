@@ -1,12 +1,11 @@
+import { useI18n } from "../../i18n/I18nContext";
 import "./StartMenu.css";
-import type { Language } from "../../types/types";
 
 type StartMenuProps = {
   isOpen: boolean;
   onClose: () => void;
   onSelectApp: (appName: string) => void;
   onShutDown: () => void;
-  language: Language;
 };
 
 export function StartMenu({
@@ -14,23 +13,29 @@ export function StartMenu({
   onClose,
   onSelectApp,
   onShutDown,
-  language,
 }: StartMenuProps) {
+  const { t } = useI18n();
+
   const apps = [
     {
       id: "portfolio",
-      label: language === "pt" ? "Portfólio" : "Portfolio",
+      label: t.apps.portfolio,
       icon: "/icons/folder.png",
     },
     {
       id: "about",
-      label: language === "pt" ? "Sobre" : "About",
+      label: t.startMenu.about,
       icon: "/icons/notepad.png",
     },
     {
       id: "contact",
-      label: language === "pt" ? "Contato" : "Contact",
+      label: t.apps.contact,
       icon: "/icons/computer.png",
+    },
+    {
+      id: "island",
+      label: t.apps.island,
+      icon: "/icons/palm.png",
     },
   ];
 
@@ -94,9 +99,7 @@ export function StartMenu({
                   <path d="M7 6.5 a7 7 0 1 0 10 0" />
                 </svg>
               </span>
-              <span className="item-label">
-                {language === "pt" ? "Desligar..." : "Shut Down..."}
-              </span>
+              <span className="item-label">{t.startMenu.shutDown}</span>
             </button>
           </div>
         </div>

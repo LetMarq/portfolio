@@ -4,13 +4,20 @@ import { StartMenu } from "./components/StartMenu/StartMenu";
 import { DesktopIcon } from "./components/DesktopIcon/DesktopIcon";
 import { LoginScreen } from "./components/LoginScreen/LoginScreen";
 import { BootScreen } from "./components/BootScreen/BootScreen";
+import { Island } from "./components/Island/Island";
 import { useState } from "react";
-import type { Language } from "./types/types";
+import { useI18n } from "./i18n/I18nContext";
 import { playStartup, playShutdown, playOpen } from "./sounds";
 import { skills } from "./skillsData";
 import "./App.css";
 
-type WindowId = "about" | "checklist" | "portfolio" | "contact" | "skills";
+type WindowId =
+  | "about"
+  | "checklist"
+  | "portfolio"
+  | "contact"
+  | "skills"
+  | "island";
 
 function SkillsContent() {
   return (
@@ -33,63 +40,41 @@ function SkillsContent() {
   );
 }
 
-function AboutContent({ language }: { language: Language }) {
+function AboutContent() {
+  const { t } = useI18n();
+
   return (
     <div className="notepad-text">
       <div className="about-section">
-        <p>
-          {language === "pt"
-            ? "Oi, eu sou a Letícia Marques."
-            : "Hi, I'm Letícia Marques."}
-        </p>
-
-        <p>
-          {language === "pt"
-            ? "Sou uma desenvolvedora apaixonada por criar experiências únicas na web."
-            : "I'm a developer passionate about creating unique experiences on the web."}
-        </p>
-
-        <p>
-          {language === "pt"
-            ? "Atualmente faço mestrado na Unicamp, voltado a jogos na educação."
-            : "I'm currently doing a master's at Unicamp, focused on games in education."}
-        </p>
+        <p>{t.about.greeting}</p>
+        <p>{t.about.passion}</p>
+        <p>{t.about.masters}</p>
       </div>
       <p>&nbsp;</p>
       <p>
         {"— "}
-        {language === "pt" ? "Tecnologias" : "Technologies"}
+        {t.about.technologiesHeading}
         {" —"}
       </p>
+      {/* nomes de tecnologia não mudam de idioma, então ficam fora do dicionário */}
       <p>React · TypeScript · CSS · Node.js</p>
       <p>Vite · Tailwind · Git · Figma</p>
       <p>&nbsp;</p>
       <p>
         <a className="notepad-link" href="/pdf/CV.pdf" download>
-          {language === "pt" ? "Baixar meu currículo" : "Download my resume"}
+          {t.about.downloadCv}
         </a>
       </p>
     </div>
   );
 }
 
-function ChecklistContent({ language }: { language: Language }) {
-  const items =
-    language === "pt"
-      ? [
-          "Terminar o portfólio.",
-          "Viajar pelo mundo.",
-          "Aprender a fazer café.",
-        ]
-      : [
-          "Finish the portfolio.",
-          "Travel the world.",
-          "Learn how to make coffee.",
-        ];
+function ChecklistContent() {
+  const { t } = useI18n();
 
   return (
     <div className="notepad-text">
-      {items.map((item, i) => (
+      {t.checklist.items.map((item, i) => (
         <p key={i}>
           {i + 1} - {item}
         </p>
@@ -104,7 +89,8 @@ const CONTACT = {
   linkedin: "https://www.linkedin.com/in/leticia-marques-pinho",
 };
 
-function ContactContent({ language }: { language: Language }) {
+function ContactContent() {
+  const { t } = useI18n();
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
 
@@ -120,22 +106,18 @@ function ContactContent({ language }: { language: Language }) {
       <div className="contact-toolbar">
         <button className="contact-send" onClick={send}>
           <span className="contact-send-icon">✉</span>
-          {language === "pt" ? "Enviar" : "Send"}
+          {t.contact.send}
         </button>
       </div>
 
       <div className="contact-row">
-        <span className="contact-label">
-          {language === "pt" ? "Para:" : "To:"}
-        </span>
+        <span className="contact-label">{t.contact.to}</span>
         <a className="contact-link" href={`mailto:${CONTACT.email}`}>
           {CONTACT.email}
         </a>
       </div>
       <div className="contact-row">
-        <span className="contact-label">
-          {language === "pt" ? "Assunto:" : "Subject:"}
-        </span>
+        <span className="contact-label">{t.contact.subject}</span>
         <input
           className="contact-input"
           value={subject}
@@ -145,17 +127,13 @@ function ContactContent({ language }: { language: Language }) {
 
       <textarea
         className="contact-body"
-        placeholder={
-          language === "pt"
-            ? "Escreva sua mensagem..."
-            : "Write your message..."
-        }
+        placeholder={t.contact.bodyPlaceholder}
         value={body}
         onChange={(e) => setBody(e.target.value)}
       />
 
       <div className="contact-social">
-        <span>{language === "pt" ? "Ou me ache em:" : "Or find me on:"}</span>
+        <span>{t.contact.findMe}</span>
         <a
           className="contact-link"
           href={CONTACT.linkedin}
@@ -180,11 +158,11 @@ function ContactContent({ language }: { language: Language }) {
 const fileMenu = ["File", "Edit", "View", "Help"];
 
 export default function App() {
+  const { t } = useI18n();
   const [menuOpen, setMenuOpen] = useState(false);
   const [openWindows, setOpenWindows] = useState<Set<WindowId>>(
     new Set(["about", "checklist"]),
   );
-  const [language, setLanguage] = useState<Language>("pt");
 
   const [zOrder, setZOrder] = useState<WindowId[]>(["about", "checklist"]);
   const [screen, setScreen] = useState<
@@ -224,36 +202,67 @@ export default function App() {
   // largura da viewport para ancorar janelas à direita em qualquer tela
   const viewportW = typeof window !== "undefined" ? window.innerWidth : 1280;
 
-  const desktopIcons = [
+  /**
+   * Um ícone da área de trabalho abre uma janela (`id`) OU um site externo
+   * (`href`), nunca os dois.
+   */
+  type DesktopItem = {
+    src: string;
+    label: string;
+    id?: WindowId;
+    href?: string;
+  };
+
+  const openItem = (item: DesktopItem) => {
+    if (item.href) {
+      playOpen();
+      // noopener/noreferrer: a aba nova não ganha acesso a esta página
+      window.open(item.href, "_blank", "noopener,noreferrer");
+      return;
+    }
+    if (item.id) openWindow(item.id);
+  };
+
+  const desktopIcons: DesktopItem[] = [
     {
       id: "about" as WindowId,
       src: "/icons/notepad.png",
-      label: language === "pt" ? "sobre_mim" : "about_me",
+      label: t.apps.about,
     },
     {
       id: "checklist" as WindowId,
       src: "/icons/write.png",
-      label: "Check List",
+      label: t.apps.checklist,
     },
     {
       id: "portfolio" as WindowId,
       src: "/icons/folder.png",
-      label: language === "pt" ? "Portfólio" : "Portfolio",
+      label: t.apps.portfolio,
     },
     {
       id: "contact" as WindowId,
       src: "/icons/computer.png",
-      label: language === "pt" ? "Contato" : "Contact",
+      label: t.apps.contact,
     },
     {
       id: "skills" as WindowId,
       src: "/icons/tech.png",
-      label: language === "pt" ? "Tecnologias" : "Skills",
+      label: t.apps.skills,
+    },
+    {
+      id: "island" as WindowId,
+      src: "/icons/palm.png",
+      label: t.apps.island,
+    },
+    {
+      href: "https://house-cleaning-athens.vercel.app/",
+      src: "/icons/bucket.png",
+      label: t.apps.cleaning,
     },
     {
       id: "checklist" as WindowId,
       src: "/icons/recycle.png",
-      label: language === "pt" ? "Lixeira" : "Recycle Bin",
+      label: t.apps.recycleBin,
     },
   ];
 
@@ -262,7 +271,7 @@ export default function App() {
   }
 
   if (screen === "login") {
-    return <LoginScreen language={language} onLogin={handleLogin} />;
+    return <LoginScreen onLogin={handleLogin} />;
   }
 
   return (
@@ -286,16 +295,14 @@ export default function App() {
               key={i}
               src={item.src}
               label={item.label}
-              onDoubleClick={() => openWindow(item.id)}
+              onDoubleClick={() => openItem(item)}
             />
           ))}
         </div>
 
         {isOpen("about") && (
           <Window
-            title={
-              language === "pt" ? "sobre_mim - Notepad" : "about_me - Notepad"
-            }
+            title={t.windowTitles.about}
             iconSrc="/icons/notepad16.png"
             menuItems={fileMenu}
             variant="notepad"
@@ -305,26 +312,26 @@ export default function App() {
             zIndex={getZ("about")}
             initialPosition={{ x: Math.max((viewportW - 320) / 2, 90), y: 70 }}
           >
-            <AboutContent language={language} />
+            <AboutContent />
           </Window>
         )}
 
         {isOpen("checklist") && (
           <Window
-            title="Check List - Notes"
+            title={t.windowTitles.checklist}
             variant="postit"
             onClose={() => closeWindow("checklist")}
             onFocus={() => focusWindow("checklist")}
             zIndex={getZ("checklist")}
             initialPosition={{ x: Math.max(viewportW - 360, 460), y: 90 }}
           >
-            <ChecklistContent language={language} />
+            <ChecklistContent />
           </Window>
         )}
 
         {isOpen("portfolio") && (
           <Window
-            title={language === "pt" ? "Portfólio" : "Portfolio"}
+            title={t.apps.portfolio}
             iconSrc="/icons/folder16.png"
             accent={{ from: "#0d6e6e", to: "#4fc4c4" }}
             onClose={() => closeWindow("portfolio")}
@@ -332,15 +339,13 @@ export default function App() {
             zIndex={getZ("portfolio")}
             initialPosition={{ x: 200, y: 150 }}
           >
-            <p style={{ padding: 8 }}>
-              {language === "pt" ? "Em construção..." : "Under construction..."}
-            </p>
+            <p style={{ padding: 8 }}>{t.portfolio.underConstruction}</p>
           </Window>
         )}
 
         {isOpen("contact") && (
           <Window
-            title={language === "pt" ? "Contato" : "Contact"}
+            title={t.apps.contact}
             iconSrc="/icons/computer16.png"
             accent={{ from: "#c75b00", to: "#ff9e57" }}
             onClose={() => closeWindow("contact")}
@@ -348,13 +353,13 @@ export default function App() {
             zIndex={getZ("contact")}
             initialPosition={{ x: 250, y: 120 }}
           >
-            <ContactContent language={language} />
+            <ContactContent />
           </Window>
         )}
 
         {isOpen("skills") && (
           <Window
-            title={language === "pt" ? "Tecnologias" : "Skills"}
+            title={t.apps.skills}
             iconSrc="/icons/tech16.png"
             accent={{ from: "#1452b3", to: "#5a8de0" }}
             onClose={() => closeWindow("skills")}
@@ -366,20 +371,28 @@ export default function App() {
           </Window>
         )}
 
+        {isOpen("island") && (
+          <Window
+            title={t.apps.island}
+            iconSrc="/icons/palm16.png"
+            accent={{ from: "#0d7a4e", to: "#4fd48a" }}
+            onClose={() => closeWindow("island")}
+            onFocus={() => focusWindow("island")}
+            zIndex={getZ("island")}
+            initialPosition={{ x: 160, y: 60 }}
+          >
+            <Island />
+          </Window>
+        )}
+
         <StartMenu
           isOpen={menuOpen}
           onClose={() => setMenuOpen(false)}
           onSelectApp={(id) => openWindow(id as WindowId)}
           onShutDown={handleShutDown}
-          language={language}
         />
 
-        <Taskbar
-          menuOpen={menuOpen}
-          toggleMenu={() => setMenuOpen((o) => !o)}
-          language={language}
-          setLanguage={setLanguage}
-        />
+        <Taskbar menuOpen={menuOpen} toggleMenu={() => setMenuOpen((o) => !o)} />
       </div>
     </div>
   );

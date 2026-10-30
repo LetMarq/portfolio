@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useI18n } from "../../i18n/I18nContext";
 import "./BootScreen.css";
 
 type BootScreenProps = {
@@ -7,12 +8,13 @@ type BootScreenProps = {
 };
 
 export function BootScreen({ onDone, durationMs = 2600 }: BootScreenProps) {
+  const { t } = useI18n();
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
 
   useEffect(() => {
-    const t = setTimeout(() => onDoneRef.current(), durationMs);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => onDoneRef.current(), durationMs);
+    return () => clearTimeout(timer);
   }, [durationMs]);
 
   return (
@@ -23,7 +25,7 @@ export function BootScreen({ onDone, durationMs = 2600 }: BootScreenProps) {
       <div className="boot-bar">
         <div className="boot-bar-fill" />
       </div>
-      <div className="boot-text">Iniciando...</div>
+      <div className="boot-text">{t.boot.starting}</div>
     </div>
   );
 }

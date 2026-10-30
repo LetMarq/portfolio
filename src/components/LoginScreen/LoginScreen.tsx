@@ -1,13 +1,13 @@
 import { useState } from "react";
+import { useI18n } from "../../i18n/I18nContext";
 import "./LoginScreen.css";
-import type { Language } from "../../types/types";
 
 type LoginScreenProps = {
-  language: Language;
   onLogin: () => void;
 };
 
-export function LoginScreen({ language, onLogin }: LoginScreenProps) {
+export function LoginScreen({ onLogin }: LoginScreenProps) {
+  const { t } = useI18n();
   const [imgOk, setImgOk] = useState(true);
 
   return (
@@ -30,23 +30,15 @@ export function LoginScreen({ language, onLogin }: LoginScreenProps) {
             <input
               className="login-password"
               type="password"
-              placeholder={language === "pt" ? "Senha" : "Password"}
+              placeholder={t.login.passwordPlaceholder}
               onKeyDown={(e) => e.key === "Enter" && onLogin()}
               autoFocus
             />
-            <button
-              className="login-go"
-              onClick={onLogin}
-              title={language === "pt" ? "Entrar" : "Log in"}
-            >
+            <button className="login-go" onClick={onLogin} title={t.login.logIn}>
               →
             </button>
           </div>
-          <p className="login-hint">
-            {language === "pt"
-              ? "Digite qualquer senha e pressione →"
-              : "Type any password and press →"}
-          </p>
+          <p className="login-hint">{t.login.hint}</p>
         </div>
       </div>
     </div>
